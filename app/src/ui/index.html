@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="Restaurant">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- JavaScript CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- CSS CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- <link rel="stylesheet" href="css/special.css"> -->
+    <link rel="stylesheet" href="css/media-query.css">
+
+    <!-- External JavaScript -->
+    <script src="js/app.js" charset="utf-8"></script>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><i class="fa fa-home" aria-hidden="true"></i>Khana Plaza</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><i class="fa fa-cutlery" aria-hidden="true"></i>Menu</a></li>
+            <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Login</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="container welcome">
+        <h1>Welcome to Khana Plaza...</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+          <span class="content-hide">ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+          cillum dolore eu fugiat nulla pariatur.</span></p>
+        <div>
+          <button type="button" name="button" class="btn btn-default" style="margin-right: 2em;" data-toggle="modal" data-target="#myModal">Place Order</button>
+          <button type="button" name="button" class="btn btn-default" data-toggle="modal" data-target="#myModal2">Previous Order</button>
+        </div>
+      </div>
+    </nav>
+
+    <footer>
+      <div style="display: flex; justify-content: space-around; padding-top: 10px;">
+        <div class="text-center">
+          <h4>Address:</h4>
+          <p>102 - Modi Road, Palaknagar</p>
+          <p>Hyderabad, India</p>
+        </div>
+        <div>
+          <h4>Home Delivery Available</h4>
+          <p>Call - 12345689</p>
+          <p class="small">* Delivery area within 3-4 kilometer, with minimum order of <br>₹100 plus ₹5 charge for all deliveries.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Modal Section Start -->
+    <div class="modal fade" id="myModal" ng-controller="PlaceOrderController">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Place Order</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <input type="text" class="form-control input-lg" placeholder="Insert your name" ng-model="name">
+              </div>
+            </form>
+            <form>
+              <div class="form-group">
+                <input type="text" class="form-control input-lg" placeholder="Insert your Mobile" ng-model="phone">
+              </div>
+            </form>
+            <form>
+              <div class="form-group">
+                <textarea class="form-control" rows="3" style="font-size: 20px; color: grey;" ng-model="address">Address</textarea>
+              </div>
+            </form>
+            <form>
+              <div class="form-group">
+                <input type="text" class="form-control input-lg" placeholder="Enter Dish" ng-model="dish">
+              </div>
+            </form>
+            <form>
+              <div class="form-group">
+                <input type="text" class="form-control input-lg" placeholder="Enter Quantity" ng-model="quantity">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-danger" data-dismiss="modal" ng-click="placeOrder()">Submit the order</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="myModal2" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Previous Order</h4>
+          </div>
+          <div class="modal-body">
+            <p>Name: </p><br>
+            <p>Address: </p><br>
+            <p>Phone No.: </p><br>
+            <p>Ordered Dish: </p><br>
+            <p>Quantity: </p><br>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>

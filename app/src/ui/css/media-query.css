@@ -1,0 +1,14 @@
+@media only screen and (max-width: 550px) {
+    .welcome>p{
+      width: 100%;
+      line-height: 1.2em;
+    }
+
+    .welcome>h1{
+      font-size: 3em;
+    }
+
+    .content-hide{
+      display: none;
+    }
+}
