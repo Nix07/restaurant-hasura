@@ -70,6 +70,50 @@ body{
   margin-top: 4em;
 }
 
+.welcome>h2{
+  color: white;
+  text-align: center;
+  margin-top: 0;
+  font-weight: bold;
+}
+
+.Category_list{
+  display: flex;
+  flex-wrap: wrap;
+  background: #333;
+  opacity: 0.8;
+  border-radius: 5px;
+  padding-bottom: 10px;
+}
+
+.Category_list>li{
+  flex: 1 0 300px;
+  max-height: 25vh;
+  overflow: hidden;
+  margin-right: 10px;
+  padding-top: 10px;
+}
+
+.Category_list a{
+  display: flex;
+  max-height: 20vh;
+}
+
+.Category_list a>img:hover{
+  background-color: white;
+  color: black;
+}
+
+.Category_list div:hover{
+  background-color: white;
+  color: black;
+}
+
+.Category_list div{
+  padding-left: 10px;
+  color: white;
+}
+
 footer{
   color: white;
   height: 20vh;
