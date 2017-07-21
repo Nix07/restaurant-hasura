@@ -82,8 +82,7 @@ body{
   flex-wrap: wrap;
   background: #333;
   opacity: 0.8;
-  border-radius: 5px;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
 }
 
 .Category_list>li{
@@ -107,6 +106,7 @@ body{
 .Category_list div:hover{
   background-color: white;
   color: black;
+  border-radius: 0 10px 10px 0;
 }
 
 .Category_list div{

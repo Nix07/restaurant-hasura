@@ -13,7 +13,7 @@
         $scope.responseData = response.data;
       })
       .catch(function(err){
-        alert('Something went wrong!');
+        alert('Something went wrong! Check the console for Details');
       });
     }
   }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="Category">
+<html lang="en" ng-app="Restaurant">
   <head>
     <title>Khana Plaza</title>
     <meta charset="utf-8">
@@ -18,7 +18,8 @@
     <link rel="stylesheet" href="css/media-query.css">
 
     <!-- External JavaScript -->
-    <script src="js/app2.js" charset="utf-8"></script>
+    <script src="js/app.js" charset="utf-8"></script>
+    <!-- <script src="js/app3.js" charset="utf-8"></script> -->
   </head>
   <body>
 
@@ -34,25 +35,28 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><i class="fa fa-cutlery" aria-hidden="true"></i>Menu</a></li>
+            <li><a href="category.html"><i class="fa fa-cutlery" aria-hidden="true"></i>Menu</a></li>
             <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Login</a></li>
           </ul>
         </div>
       </div>
 
-      <div class="container welcome" ng-controller="CategoryController" ng-init="getCategory()">
-        <h2>Menu Categories</h2>
+
+      <div class="container welcome" ng-controller="MenuListController" ng-init="getMenuList()">
+        <h2>{{Category_name}}</h2>
         <ul class="Category_list">
           <li ng-repeat = "data in responseData">
-            <a ng-href="menu.html#{{data.name}}">
+            <a ng-href="#" data-toggle="modal" data-target="#myModal">
               <img ng-src={{data.image_link}} width="170" class="img img-thumbnail img-responsive">
               <div>
                 <h3>{{data.name}}</h3>
                 <h4>{{data.description}}</h4>
+                <h4>₹{{data.cost}}</h4>
               </div>
             </a>
           </li>
         </ul>
+        <button type="button" name="button" class="btn btn-default" style="float: right; margin-bottom: 10px;" data-toggle="modal" data-target="#myModal">Place Order</button>
       </div>
     </nav>
 
@@ -70,5 +74,50 @@
         </div>
       </div>
     </footer>
+
+    <!-- Order Placing Modal -->
+    <div>
+      <div class="modal fade" id="myModal" ng-controller="PlaceOrderController">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Place Order</h4>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <input type="text" class="form-control input-lg" placeholder="Insert your name" ng-model="name">
+                </div>
+              </form>
+              <form>
+                <div class="form-group">
+                  <input type="text" class="form-control input-lg" placeholder="Insert your Mobile" ng-model="phone">
+                </div>
+              </form>
+              <form>
+                <div class="form-group">
+                  <textarea class="form-control" rows="3" style="font-size: 20px; color: grey;" ng-model="address">Address</textarea>
+                </div>
+              </form>
+              <form>
+                <div class="form-group">
+                  <input type="text" class="form-control input-lg" placeholder="Enter Dish" ng-model="dish">
+                </div>
+              </form>
+              <form>
+                <div class="form-group">
+                  <input type="text" class="form-control input-lg" placeholder="Enter Quantity" ng-model="quantity">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-danger" data-dismiss="modal" ng-click="placeOrder()">Submit the order</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </body>
 </html>

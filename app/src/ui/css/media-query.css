@@ -11,4 +11,34 @@
     .content-hide{
       display: none;
     }
+
+    .Category_list h4{
+      font-size: 1em;
+    }
+
+    .Category_list h3{
+      font-size: 1.2em;
+    }
+}
+
+@media only screen and (max-width: 370px) {
+  .Category_list img{
+    width: 130px;
+  }
+
+  .Category_list li{
+    margin-left: -20px;
+  }
+
+  .Category_list div{
+    width: 50%;
+  }
+
+  .Category_list h4{
+    width: 85%;
+  }
+
+  .Category_list div{
+    margin-top: -20px;
+  }
 }
