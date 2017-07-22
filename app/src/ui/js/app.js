@@ -186,22 +186,22 @@
 
     service.order = function(user_name, user_phone, user_address, user_dish, user_quantity){
       return $http({
-				method: 'POST',
-				url: 'http://data.c100.hasura.me/v1/query',
-        headers: {
+				method : 'POST',
+				url : 'http://data.c100.hasura.me/v1/query',
+        headers : {
           'Content-Type': 'application/json'
         },
-        data: {
-          type: "insert",
-          args: {
-            table: "Order",
-            objects: [{
-              user_id: 3,
-              name: user_name,
-              address: user_address,
-              phone: user_phone,
-              ordered_dish: user_dish,
-              quantity: user_quantity
+        data : {
+          type : "insert",
+          args : {
+            table : "Order",
+            objects : [{
+              user_id : 3,
+              name : user_name,
+              address : user_address,
+              phone : user_phone,
+              ordered_dish : user_dish,
+              quantity : user_quantity
             }]
           }
         }

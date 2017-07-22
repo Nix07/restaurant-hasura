@@ -112,6 +112,12 @@ body{
 .Category_list div{
   padding-left: 10px;
   color: white;
+  padding-right: 10px;
+}
+
+.Category_list h4{
+  font-style: italic;
+  font-size: 1.2em;
 }
 
 footer{
