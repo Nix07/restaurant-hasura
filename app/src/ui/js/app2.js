@@ -42,7 +42,6 @@
   function SignUpService($http){
     var service = this;
     service.signup = function(username_data, password_data, name_data, favourites_data){
-      console.log(favourites_data);
       return $http({
         method : 'POST',
         url : 'http://auth.c100.hasura.me/signup',
@@ -55,9 +54,33 @@
         }
       })
       .then(function(response){
-        console.log(response);
         var auth_token_data = response.data.auth_token;
         var user_id_data = response.data.hasura_id;
+
+        deleteAllCookies();
+        setCookie("auth_token", auth_token_data, 1);
+        setCookie("user_id", user_id_data, 1);
+
+        function deleteAllCookies() {
+            var cookies = document.cookie.split(";");
+
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i];
+                var eqPos = cookie.indexOf("=");
+                var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            }
+        }
+
+        function setCookie(cname,cvalue,exdays) {
+          var d = new Date();
+          // d.setTime(d.getTime() + (exdays*24*60*60*1000));
+          // var expires = "expires=" + d.toGMTString();
+          document.cookie = cname + "=" + cvalue + ";" + ";path=/";
+        }
+        console.log(document.cookie);
+
+
         $http({
           method : 'POST',
   				url : 'http://data.c100.hasura.me/v1/query',
@@ -101,16 +124,42 @@
     }
   }
 
-  LoginController.$inject = ['$scope', 'LoginService'];
-  function LoginController($scope, LoginService){
+  LoginController.$inject = ['$scope', 'LoginService', '$location'];
+  function LoginController($scope, LoginService, $location){
     $scope.username = '';
     $scope.password = '';
     $scope.login = function(){
       var promise = LoginService.login($scope.username, $scope.password);
       promise.then(function (response) {
-        console.log(response);
+        $scope.auth_token = response.data.auth_token;
+        $scope.user_id = response.data.hasura_id;
+        var domain = $location.$$host + ":" + $location.$$port + '/app/src/ui';
+
         if (response.status == 200) {
           alert('Login Successful!');
+
+          deleteAllCookies();
+          setCookie("auth_token", $scope.auth_token, 1);
+          setCookie("user_id", $scope.user_id, 1);
+
+          function deleteAllCookies() {
+              var cookies = document.cookie.split(";");
+
+              for (var i = 0; i < cookies.length; i++) {
+                  var cookie = cookies[i];
+                  var eqPos = cookie.indexOf("=");
+                  var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                  document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+              }
+          }
+
+          function setCookie(cname,cvalue,exdays) {
+            var d = new Date();
+            // d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            // var expires = "expires=" + d.toGMTString();
+            document.cookie = cname + "=" + cvalue + ";" + ";path=/";
+          }
+          console.log(document.cookie);
         }
       })
       .catch(function (err) {

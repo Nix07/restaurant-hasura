@@ -20,7 +20,7 @@
     <!-- External JavaScript -->
     <script src="js/app.js" charset="utf-8"></script>
   </head>
-  <body ng-controller="PreviousOrderController">
+  <body ng-controller="PreviousOrderController" onload="checkCookie()">
 
     <nav class="navbar navbar-default" style="height: auto; min-height: 90vh;">
       <div class="container">
@@ -150,5 +150,34 @@
 
       </div>
     </div>
+
+    <script type="text/javascript">
+    function getCookie(cname) {
+      var name = cname + "=";
+      var ca = document.cookie.split(';');
+      for(var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+              c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+              return c.substring(name.length, c.length);
+          }
+      }
+      return "";
+    }
+
+    function checkCookie() {
+      var auth_token = getCookie("auth_token");
+      var user_id = getCookie("user_id");
+      if (auth_token != "" && user_id != "") {
+          alert("Authorization Token : " + auth_token);
+          alert("User Id : " + user_id);
+      } else {
+          console.log('No Authorization Token Found!');
+      }
+    }
+    </script>
+
   </body>
 </html>
