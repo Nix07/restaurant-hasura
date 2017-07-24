@@ -20,7 +20,7 @@
     <!-- External JavaScript -->
     <script src="js/app.js" charset="utf-8"></script>
   </head>
-  <body ng-controller="PreviousOrderController" onload="checkCookie()">
+  <body ng-controller="PreviousOrderController">
 
     <nav class="navbar navbar-default" style="height: auto; min-height: 90vh;">
       <div class="container">
@@ -52,21 +52,25 @@
         </div>
       </div>
 
-      <div class="container welcome" ng-controller="FavouriteItemsController" ng-init="getFavouriteItems()">
-        <h2 style="text-align: left; margin-top: 1em;">Favourite Items</h2>
-        <ul class="Category_list">
-          <li ng-repeat = "data in responseData">
-            <a ng-href="#" data-toggle="modal" data-target="#myModal">
-              <img ng-src={{data.image_link}} width="170" class="img img-thumbnail img-responsive">
-              <div>
-                <h3>{{data.name}}</h3>
-                <h4>{{data.description}}</h4>
-                <h4>₹{{data.cost}}</h4>
-              </div>
-            </a>
-          </li>
-        </ul>
+      <div class="container welcome" ng-controller="FavouriteItemsController">
+        <div ng-init="getFavouriteItems()">
+          <h2 style="text-align: left; margin-top: 1em; font-size: 1.7em; font-weight: normal;"><span  ng-if="display()">Hi, </span><span style="font-weight: bold;">{{fullName}}</span>...</h2>
+          <h3 style="color : white; margin-top : 0; text-align : center;" ng-if="display()"><u>Your Favourite Dishes</u></h3>
+          <ul class="Category_list" ng-if="display()">
+            <li ng-repeat = "data in responseData">
+              <a ng-href="#" data-toggle="modal" data-target="#myModal">
+                <img ng-src={{data.image_link}} width="170" class="img img-thumbnail img-responsive">
+                <div>
+                  <h3>{{data.name}}</h3>
+                  <h4>{{data.description}}</h4>
+                  <h4>₹{{data.cost}}</h4>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
+
     </nav>
 
     <footer>
@@ -151,33 +155,33 @@
       </div>
     </div>
 
-    <script type="text/javascript">
-    function getCookie(cname) {
-      var name = cname + "=";
-      var ca = document.cookie.split(';');
-      for(var i = 0; i < ca.length; i++) {
-          var c = ca[i];
-          while (c.charAt(0) == ' ') {
-              c = c.substring(1);
-          }
-          if (c.indexOf(name) == 0) {
-              return c.substring(name.length, c.length);
-          }
+    <!-- <script type="text/javascript">
+      function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
       }
-      return "";
-    }
 
-    function checkCookie() {
-      var auth_token = getCookie("auth_token");
-      var user_id = getCookie("user_id");
-      if (auth_token != "" && user_id != "") {
-          alert("Authorization Token : " + auth_token);
-          alert("User Id : " + user_id);
-      } else {
-          console.log('No Authorization Token Found!');
+      function checkCookie() {
+        var auth_token = getCookie("auth_token");
+        var user_id = getCookie("user_id");
+        if (auth_token != "" && user_id != "") {
+            alert("Authorization Token : " + auth_token);
+            alert("User Id : " + user_id);
+        } else {
+            console.log('No Authorization Token Found!');
+        }
       }
-    }
-    </script>
+    </script> -->
 
   </body>
 </html>

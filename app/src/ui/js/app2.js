@@ -12,8 +12,8 @@
     .service('DisplayMenuListService', DisplayMenuListService);
 
 
-  SignUpController.$inject = ['$scope', 'SignUpService', 'DisplayMenuListService']
-  function SignUpController($scope, SignUpService, DisplayMenuListService){
+  SignUpController.$inject = ['$scope', 'SignUpService', 'DisplayMenuListService', '$location']
+  function SignUpController($scope, SignUpService, DisplayMenuListService, $location){
     $scope.getMenuItems = function(){
       var promise = DisplayMenuListService.getItems();
       promise.then(function (response) {
@@ -31,6 +31,12 @@
       var promise = SignUpService.signup($scope.username, $scope.password, $scope.name, $scope.favourites);
       promise.then(function (response) {
         alert('SignUp Successful!');
+        var domain = $location.protocol() + '://' + $location.host() + ':' + $location.port();
+        // console.log(domain);
+        newDoc(domain);
+        function newDoc(domain) {
+          window.location.assign(domain);
+        }
       })
       .catch(function (err) {
         alert('Something went wrong! Check console for Details');
@@ -44,7 +50,7 @@
     service.signup = function(username_data, password_data, name_data, favourites_data){
       return $http({
         method : 'POST',
-        url : 'http://auth.c100.hasura.me/signup',
+        url : 'http://auth.khana-plaza.hasura.me/signup',
         headers : {
           'Content-Type' : 'application/json'
         },
@@ -80,10 +86,9 @@
         }
         console.log(document.cookie);
 
-
         $http({
           method : 'POST',
-  				url : 'http://data.c100.hasura.me/v1/query',
+  				url : 'http://data.khana-plaza.hasura.me/v1/query',
           headers : {
             'Content-Type': 'application/json',
             'Authorization' : 'Bearer ' + auth_token_data
@@ -103,7 +108,7 @@
         for (var i = 0; i < favourites_data.length; i++) {
           $http({
             method : 'POST',
-    				url : 'http://data.c100.hasura.me/v1/query',
+    				url : 'http://data.khana-plaza.hasura.me/v1/query',
             headers : {
               'Content-Type': 'application/json',
               'Authorization' : 'Bearer ' + auth_token_data
@@ -120,7 +125,7 @@
             }
           });
         }
-      })
+      });
     }
   }
 
@@ -133,7 +138,7 @@
       promise.then(function (response) {
         $scope.auth_token = response.data.auth_token;
         $scope.user_id = response.data.hasura_id;
-        var domain = $location.$$host + ":" + $location.$$port + '/app/src/ui';
+        var domain = $location.$$host + ":" + $location.$$port;
 
         if (response.status == 200) {
           alert('Login Successful!');
@@ -159,7 +164,13 @@
             // var expires = "expires=" + d.toGMTString();
             document.cookie = cname + "=" + cvalue + ";" + ";path=/";
           }
-          console.log(document.cookie);
+          // console.log(document.cookie);
+          var domain = $location.protocol() + '://' + $location.host() + ':' + $location.port();
+          // console.log(domain);
+          newDoc(domain);
+          function newDoc(domain) {
+            window.location.assign(domain);
+          }
         }
       })
       .catch(function (err) {
@@ -188,7 +199,7 @@
     service.getItems = function(){
       return $http({
         method : 'POST',
-        url : 'http://data.c100.hasura.me/v1/query',
+        url : 'http://data.khana-plaza.hasura.me/v1/query',
         headers : {
           'Content-Type': 'application/json'
         },
@@ -211,7 +222,7 @@
     service.login = function(username_data, password_data){
       return $http({
         method : 'POST',
-        url : 'http://auth.c100.hasura.me/login',
+        url : 'http://auth.khana-plaza.hasura.me/login',
         headers : {
           'Content-Type' : 'application/json'
         },
@@ -230,7 +241,7 @@
     service.getItems = function(){
       return $http({
         method : 'POST',
-        url : 'http://data.c100.hasura.me/v1/query',
+        url : 'http://data.khana-plaza.hasura.me/v1/query',
         headers : {
           'Content-Type': 'application/json'
         },
