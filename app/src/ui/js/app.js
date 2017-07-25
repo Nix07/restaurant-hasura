@@ -11,8 +11,31 @@
     .service('PreviousOrderService', PreviousOrderService)
     .service('FavouriteItemService', FavouriteItemService)
     .service('CookieService', CookieService)
-    .service('GetNameService', GetNameService);
+    .service('GetNameService', GetNameService)
+    .service('DisplayMenuListService', DisplayMenuListService);
 
+  DisplayMenuListService.$inject = ['$http'];
+  function DisplayMenuListService($http){
+    var service = this;
+
+    service.getItems = function(){
+      return $http({
+        method : 'POST',
+        url : 'http://data.khana-plaza.hasura.me/v1/query',
+        headers : {
+          'Content-Type': 'application/json'
+        },
+        data : {
+          type: "select",
+          args: {
+            table : "Menu_list",
+            columns : ["*"],
+            order_by : "+name"
+          }
+        }
+      });
+    }
+  }
 
   function CookieService(){
     var service = this;
@@ -25,6 +48,18 @@
     service.getCookieValue = function(cname){
       return getCookie(cname);
     };
+
+    service.deleteAllCookies = function(){
+      var cookies = document.cookie.split(";");
+
+      for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i];
+          var eqPos = cookie.indexOf("=");
+          var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+          document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT" + ";path=/";
+      }
+      return true;
+    }
 
     var getCookie = function (cname) {
       var name = cname + "=";
@@ -55,12 +90,20 @@
 
   }
 
-  FavouriteItemsController.$inject = ['$scope', 'FavouriteItemService', 'CookieService', 'GetNameService'];
-  function FavouriteItemsController($scope, FavouriteItemService, CookieService, GetNameService) {
+  FavouriteItemsController.$inject = ['$scope', 'FavouriteItemService', 'CookieService', 'GetNameService', '$window'];
+  function FavouriteItemsController($scope, FavouriteItemService, CookieService, GetNameService, $window) {
+    $scope.logout = function(){
+      var decision = CookieService.deleteAllCookies();
+      if(decision){
+        alert('Logged Out!');
+        $window.location.reload();
+      }else {
+        console.log('Something went wrong!');
+      }
+    }
 
     $scope.getFavouriteItems = function(){
       var decision = CookieService.display();
-      console.log('Decision :' + decision);
       if( decision === true){
         $scope.display = function(){
           return true;
@@ -161,10 +204,20 @@
     }
   }
 
-  PlaceOrderController.$inject = ['$scope', 'PlaceOrderService', 'CookieService'];
-  function PlaceOrderController($scope, PlaceOrderService, CookieService) {
-    var auth_token = CookieService.getCookieValue("auth_token");
+  PlaceOrderController.$inject = ['$scope', 'PlaceOrderService', 'CookieService', 'DisplayMenuListService'];
+  function PlaceOrderController($scope, PlaceOrderService, CookieService, DisplayMenuListService) {
     var user_id = CookieService.getCookieValue("user_id");
+
+    $scope.getMenuItems = function(){
+      var promise = DisplayMenuListService.getItems();
+      promise.then(function (response) {
+        $scope.responseData = response.data;
+      })
+      .catch(function(err){
+        alert('Something went wrong! Check console for Details')
+      })
+    }
+
     $scope.name = '';
     $scope.phone = '';
     $scope.address = '';
@@ -186,20 +239,23 @@
   PreviousOrderController.$inject = ['$scope', 'PreviousOrderService', 'CookieService'];
   function PreviousOrderController($scope, PreviousOrderService, CookieService) {
     var auth_token = CookieService.getCookieValue("auth_token");
-    var user_id = CookieService.getCookieValue("user_id");
     $scope.lastOrder = function(){
-      var promise = PreviousOrderService.lastOrder(auth_token);
-      promise.then(function(response){
-        $scope.name = response.name;
-        $scope.address = response.address;
-        $scope.phone = response.phone;
-        $scope.ordered_dish = response.ordered_dish;
-        $scope.quantity = response.quantity;
-        $scope.time = response.ordered_time;
-      })
-      .catch(function(err){
-        alert(err.statusText);
-      })
+      if (auth_token == "") {
+        alert("Please Login First!");
+      }else {
+        var promise = PreviousOrderService.lastOrder(auth_token);
+        promise.then(function(response){
+          $scope.name = response.name;
+          $scope.address = response.address;
+          $scope.phone = response.phone;
+          $scope.ordered_dish = response.ordered_dish;
+          $scope.quantity = response.quantity;
+          $scope.time = response.ordered_time;
+        })
+        .catch(function(err){
+          alert(err.statusText);
+        });
+      }
     }
   }
 
@@ -285,30 +341,50 @@
     var service = this;
 
     service.order = function(user_name, user_phone, user_address, user_dish, user_quantity, user_id_data){
-      return $http({
-				method : 'POST',
-				url : 'http://data.khana-plaza.hasura.me/v1/query',
-        headers : {
-          'Content-Type': 'application/json'
-        },
-        data : {
-          type : "insert",
-          args : {
-            table : "Order",
-            objects : [{
-              user_id : user_id_data,
-              name : user_name,
-              address : user_address,
-              phone : user_phone,
-              ordered_dish : user_dish,
-              quantity : user_quantity
-            }]
+      if( user_id_data == ""){
+        return $http({
+  				method : 'POST',
+  				url : 'http://data.khana-plaza.hasura.me/v1/query',
+          headers : {
+            'Content-Type': 'application/json'
+          },
+          data : {
+            type : "insert",
+            args : {
+              table : "Order",
+              objects : [{
+                name : user_name,
+                address : user_address,
+                phone : user_phone,
+                ordered_dish : user_dish,
+                quantity : user_quantity
+              }]
+            }
           }
-        }
-			})
-      .then(function(response){
-        return response;
-      });
+  			});
+      } else {
+        return $http({
+  				method : 'POST',
+  				url : 'http://data.khana-plaza.hasura.me/v1/query',
+          headers : {
+            'Content-Type': 'application/json'
+          },
+          data : {
+            type : "insert",
+            args : {
+              table : "Order",
+              objects : [{
+                user_id : user_id_data,
+                name : user_name,
+                address : user_address,
+                phone : user_phone,
+                ordered_dish : user_dish,
+                quantity : user_quantity
+              }]
+            }
+          }
+  			});
+      }
     }
   }
 

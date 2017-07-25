@@ -5,7 +5,6 @@
     .controller('CategoryController', CategoryController)
     .controller('LoginController', LoginController)
     .controller('SignUpController', SignUpController)
-    // .controller('DisplayMenuListController', DisplayMenuListController)
     .service('MenuCategoryService', MenuCategoryService)
     .service('LoginService', LoginService)
     .service('SignUpService', SignUpService)

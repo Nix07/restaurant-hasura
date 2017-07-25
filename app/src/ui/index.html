@@ -19,8 +19,14 @@
 
     <!-- External JavaScript -->
     <script src="js/app.js" charset="utf-8"></script>
+
+    <style media="screen">
+      .error-message{
+        color: red;
+      }
+    </style>
   </head>
-  <body ng-controller="PreviousOrderController">
+  <body ng-controller="PreviousOrderController" style="width: 100vw;">
 
     <nav class="navbar navbar-default" style="height: auto; min-height: 90vh;">
       <div class="container">
@@ -54,6 +60,7 @@
 
       <div class="container welcome" ng-controller="FavouriteItemsController">
         <div ng-init="getFavouriteItems()">
+          <button type="button" class="btn btn-default" style="float: right;" ng-if="display()" ng-click="logout()">Logout</button>
           <h2 style="text-align: left; margin-top: 1em; font-size: 1.7em; font-weight: normal;"><span  ng-if="display()">Hi, </span><span style="font-weight: bold;">{{fullName}}</span>...</h2>
           <h3 style="color : white; margin-top : 0; text-align : center;" ng-if="display()"><u>Your Favourite Dishes</u></h3>
           <ul class="Category_list" ng-if="display()">
@@ -97,29 +104,37 @@
             <h4 class="modal-title">Place Order</h4>
           </div>
           <div class="modal-body">
-            <form>
+            <form name="myform1" novalidate>
               <div class="form-group">
-                <input type="text" class="form-control input-lg" placeholder="Insert your name" ng-model="name">
+                <input type="text" class="form-control input-lg" placeholder="Insert your name" ng-model="name" ng-required="true" name="fname">
+                <span class="error-message" ng-show="myform1.fname.$dirty && myform1.fname.$error.required">Name is required</span>
               </div>
             </form>
-            <form>
+            <form name="myform2" novalidate>
               <div class="form-group">
-                <input type="text" class="form-control input-lg" placeholder="Insert your Mobile" ng-model="phone">
+                <input type="text" class="form-control input-lg" placeholder="Insert your Mobile" ng-model="phone" name="phone" ng-pattern="/^\d{10}$/">
+                <span class="error-message" ng-show="myform2.phone.$dirty && myform2.phone.$invalid">The phone number field should be of 10 digits</span>
               </div>
             </form>
-            <form>
+            <form name="myform3" novalidate>
               <div class="form-group">
-                <textarea class="form-control" rows="3" style="font-size: 20px; color: grey;" ng-model="address">Address</textarea>
+                <textarea class="form-control" rows="3" style="font-size: 20px; color: grey;" ng-model="address" ng-required="true" name="address">Address</textarea>
+                <span class="error-message" ng-show="myform3.address.$dirty && myform3.address.$error.required">Address is required</span>
               </div>
             </form>
-            <form>
-              <div class="form-group">
-                <input type="text" class="form-control input-lg" placeholder="Enter Dish" ng-model="dish">
+            <form ng-init="getMenuItems()" name="myform4" novalidate>
+              <div class="form-group control-label">
+                <select class="form-control" style="height: 3em;" ng-model="dish" ng-required="true" name="dish">
+                  <option value="">Please Select a Dish</option>
+                  <option ng-repeat="data in responseData">{{data.name}}</option>
+                </select>
+                <span class="error-message" ng-show="myform4.dish.$dirty && myform4.dish.$error.required">Address is required</span>
               </div>
             </form>
-            <form>
+            <form name="myform5" novalidate>
               <div class="form-group">
-                <input type="text" class="form-control input-lg" placeholder="Enter Quantity" ng-model="quantity">
+                <input type="text" class="form-control input-lg" placeholder="Enter Quantity" ng-model="quantity" ng-required="true" name="quantity">
+                <span class="error-message" ng-show="myform5.quantity.$dirty && myform5.quantity.$error.required">Quantity is required</span>
               </div>
             </form>
           </div>
@@ -154,34 +169,6 @@
 
       </div>
     </div>
-
-    <!-- <script type="text/javascript">
-      function getCookie(cname) {
-        var name = cname + "=";
-        var ca = document.cookie.split(';');
-        for(var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-      }
-
-      function checkCookie() {
-        var auth_token = getCookie("auth_token");
-        var user_id = getCookie("user_id");
-        if (auth_token != "" && user_id != "") {
-            alert("Authorization Token : " + auth_token);
-            alert("User Id : " + user_id);
-        } else {
-            console.log('No Authorization Token Found!');
-        }
-      }
-    </script> -->
 
   </body>
 </html>
